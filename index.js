@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
@@ -19,7 +20,7 @@ app.get('/hello', function(req, res){
     }
 })
 
-app.post('/', (req, res) => {
+app.post('/chat', (req, res) => {
     let result = "";
     if(req.body.msg !== undefined){
         switch(req.body.msg){
