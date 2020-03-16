@@ -20,23 +20,36 @@ app.get('/hello', function(req, res){
     }
 })
 
-app.post('/chat', (req, res) => {
-    let result = "";
-    if(req.body.msg !== undefined){
-        switch(req.body.msg){
-            case 'ville':
-                result = "Nous sommes à Paris.";
-                break;
-            case "meteo":
-                result = "Il fait beau";
-                break;
-            default:
-                result = req.body.msg;
-                break;
+app.post('/chat', function(req, res){
+    if(req.body.msg != undefined){
+        var msg = req.body.msg
+        var index = msg.indexOf('=')
+        console.log(msg);
+        if(msg.indexOf('=') == -1){
+            fs.readFile("./reponses.json", (err, data) => {
+                console.log(data.length)
+                if(data.length == 0){
+                    res.send("Je ne connais pas " + msg + ".");
+                } else {
+                    if (err) throw err;
+                        let demain = JSON.parse(data);
+                        if(demain.demain !== undefined){
+                            res.send("demain: " + demain.demain)
+                        }
+                }
+            });
+        } else {
+            let key = msg.substring(0, index)
+            let value = msg.substring(index+1, msg.length)
+            let content = {
+                demain: value
+            }
+            fs.writeFile("./reponses.json",JSON.stringify(content), error => {
+                if(error){
+                    console.error(error);
+                }
+                res.send("Merci pour cette information.")
+            })
         }
-        
-    } else {
-        result = "Aucun message";
     }
-    res.send(result);
-})
+});
