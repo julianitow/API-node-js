@@ -11,9 +11,11 @@ app.listen(PORT, function () {
 })
 
 app.get('/hello', function(req, res){
-    if(req.query.nom == ""){
+    if(req.query.nom == "" || req.query.nom == undefined){
         res.send('Quel est votre nom ?');
     } else {
         res.send('Bonjour ' + req.query.nom)
     }
 })
+
+app.post()
