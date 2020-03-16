@@ -9,3 +9,11 @@ app.get('/', function (req, res) {
 app.listen(PORT, function () {
   console.log('Example app listening on port 3000!')
 })
+
+app.get('/hello', function(req, res){
+    if(req.query.nom == ""){
+        res.send('Quel est votre nom ?');
+    } else {
+        res.send('Bonjour ' + req.query.nom)
+    }
+})
