@@ -27,15 +27,18 @@ app.post('/chat', function(req, res){
         console.log(msg);
         if(msg.indexOf('=') == -1){
             fs.readFile("./reponses.json", (err, data) => {
-                console.log(data.length)
-                if(data.length == 0){
-                    res.send("Je ne connais pas " + msg + ".");
+                if(data != undefined){
+                    if(data.length == 0){
+                        res.send("Je ne connais pas " + msg + ".");
+                    } else {
+                        if (err) throw err;
+                            let demain = JSON.parse(data);
+                            if(demain.demain !== undefined){
+                                res.send("demain: " + demain.demain)
+                            }
+                    }
                 } else {
-                    if (err) throw err;
-                        let demain = JSON.parse(data);
-                        if(demain.demain !== undefined){
-                            res.send("demain: " + demain.demain)
-                        }
+                    res.send("Je ne connais pas " + msg + ".");
                 }
             });
         } else {
